@@ -11,9 +11,9 @@
 
 ## 🎬 Demo
 
-https://github.com/user-attachments/assets/88fdf161-b541-445c-9d31-14b728b7017f
+https://github.com/user-attachments/assets/f64a1ec3-07ba-47dd-ae82-99c379c9de66
 
-Watch the auto-dimmer in action - timeout is set to 5s for demo purposes
+Watch the auto-dimmer in action - idle timeout is set to 2s for demo purposes
 
 ---
 
