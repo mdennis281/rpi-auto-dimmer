@@ -1,20 +1,23 @@
 # 🌅 Raspberry Pi Auto-Dimmer
 
-> **Automatically dims your official Raspberry Pi touchscreen after periods of inactivity - saving power and extending screen life.**
+> **The smart alternative to screen blanking - automatically dims your Raspberry Pi touchscreen when idle, keeping it visible but power-efficient.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-Compatible-red.svg)](https://www.raspberrypi.org/)
 
+## 💡 Why Auto-Dimmer?
+
+**Better than screen blanking:** Your display stays visible at low brightness, so you can still see what's running without having to wake it up.
+
+**Better than full brightness:** Dramatically reduces power consumption and heat while extending your display's lifespan - without the jarring transition of a completely black screen.
+
+**The perfect middle ground:** Smooth, clean transitions between dimmed and active states that feel natural and unobtrusive.
+
 ## ✨ Features
 
-- 🔆 **Smart brightness control** - Automatically dims screen when idle, restores on activity
-- ⚡ **Power efficient** - Reduces power consumption and heat generation
-- 🛠️ **Easy configuration** - Simple interactive setup with sensible defaults
-- 🚀 **One-line installation** - Get up and running in seconds
-- 🔄 **Seamless updates** - Update to latest version with a single command
-- 🎯 **Official Pi displays** - Designed for Raspberry Pi 7" touchscreen and compatible displays
-- 🔧 **Systemd service** - Runs automatically on boot, managed like any system service
+- � **Smart brightness control** - Automatically dims screen when idle, restores on activity with clean transitions
+- ⚡ **Power efficient** - Reduces power consumption and heat generation while keeping display visible
 
 ## 🎬 Demo
 
@@ -24,7 +27,7 @@
 
 ## 🚀 Quick Start
 
-### One-Line Installation
+### Install
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/install-remote.sh | bash
@@ -32,13 +35,13 @@ curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/head
 
 That's it! The service will be installed and started automatically.
 
-### One-Line Update
+### Update
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/update.sh | bash
 ```
 
-### One-Line Uninstall
+### Uninstall
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/uninstall.sh | bash
