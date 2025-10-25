@@ -1,4 +1,4 @@
-# 🌅 Raspberry Pi Auto-Dimmer
+# 🔆 Raspberry Pi Auto-Dimmer
 
 > **The convenient alternative to screen blanking - automatically dims your Raspberry Pi touchscreen when idle, keeping it visible but power-efficient.**
 
@@ -6,7 +6,7 @@
 
 ## ✨ Features
 
-- � **Smart brightness control** - Automatically dims screen when idle, restores on activity with clean transitions
+- 💡 **Smart brightness control** - Automatically dims screen when idle, restores on activity with clean transitions
 - ⚡ **Power efficient** - Reduces power consumption and heat generation while keeping display visible
 
 ## 🎬 Demo
