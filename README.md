@@ -1,4 +1,7 @@
-# 🌅 Raspberry Pi Auto-Dimmer
+# 🌅 Ras## ✨ Features
+
+- 🔆 **Smart brightness control** - Automatically dims screen when idle, restores on activity with smooth transitions
+- ⚡ **Power efficient** - Reduces power consumption and heat generation while keeping display visibleto-Dimmer
 
 > **The smart alternative to screen blanking - automatically dims your Raspberry Pi touchscreen when idle, keeping it visible but power-efficient.**
 
