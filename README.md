@@ -104,17 +104,8 @@ sudo journalctl -u rpi-auto-dimmer -f
 
 ## 🔧 Dependencies
 
-### System Dependencies
 - **[xprintidle](https://packages.debian.org/stable/xprintidle)** - Detects user idle time in X11
-  ```bash
-  sudo apt install xprintidle
-  ```
-
-### Python Dependencies
 - **[rpi_backlight](https://github.com/linusg/rpi-backlight)** - Controls Raspberry Pi display backlight
-  ```bash
-  pip install rpi_backlight
-  ```
 
 ### Hardware Requirements
 - Raspberry Pi (any model with display output)
