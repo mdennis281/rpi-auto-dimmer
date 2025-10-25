@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Raspberry Pi Auto-Dimmer Service Installation Script
-# This script sets up the rpi-auto-dimmer as a systemd service
+# Raspberry Pi Auto-Dimmer Remote Installation Script
+# This script downloads and installs the rpi-auto-dimmer as a systemd service
 
 set -e  # Exit on any error
 
@@ -10,8 +10,9 @@ SERVICE_NAME="rpi-auto-dimmer"
 INSTALL_DIR="/opt/$PROJECT_NAME"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 USER=$(whoami)  # Use the current user running the script
+GITHUB_RAW_URL="https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main"
 
-echo "Installing $PROJECT_NAME..."
+echo "Installing $PROJECT_NAME from GitHub..."
 
 # Update system packages
 echo "Updating system packages..."
@@ -20,17 +21,36 @@ sudo apt upgrade -y
 
 # Install required system packages
 echo "Installing system dependencies..."
-sudo apt install -y python3 python3-pip python3-venv git xprintidle
+sudo apt install -y python3 python3-pip python3-venv git xprintidle curl
 
 # Create installation directory
 echo "Creating installation directory..."
 sudo mkdir -p "$INSTALL_DIR"
 sudo chown $USER:$USER "$INSTALL_DIR"
-
-# Copy project files
-echo "Copying project files..."
-cp -r . "$INSTALL_DIR/"
 cd "$INSTALL_DIR"
+
+# Download project files
+echo "Downloading project files..."
+mkdir -p src
+
+# Download root files
+for file in main.py requirements.txt config.sh LICENSE README.md; do
+    echo "  Downloading $file..."
+    curl -sL "$GITHUB_RAW_URL/$file" -o "$file" || {
+        echo "Warning: Could not download $file"
+    }
+done
+
+# Download src files
+for file in decorator.py helpers.py idle_monitor.py screen_control.py; do
+    echo "  Downloading src/$file..."
+    curl -sL "$GITHUB_RAW_URL/src/$file" -o "src/$file" || {
+        echo "Warning: Could not download src/$file"
+    }
+done
+
+# Make config script executable
+chmod +x config.sh
 
 # Create and activate virtual environment
 echo "Creating Python virtual environment..."
@@ -42,10 +62,30 @@ echo "Installing Python dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Run configuration setup
-echo "Setting up configuration..."
-chmod +x config.sh
-./config.sh
+# Create default configuration
+echo "Setting up default configuration..."
+cat > config.ini << EOF
+[display]
+# Screen brightness percentage when system is idle (0-100)
+idle_brightness = 5
+
+# Screen brightness percentage when system is active (0-100)
+active_brightness = 100
+
+# Number of seconds to wait before dimming the screen
+dim_delay_seconds = 30
+
+[behavior]
+# How often to check idle status (seconds)
+check_interval = 0.25
+EOF
+
+echo "Default configuration created:"
+echo "  ✓ Idle brightness:    5%"
+echo "  ✓ Active brightness:  100%"
+echo "  ✓ Dimming delay:      30 seconds"
+echo ""
+echo "To customize settings later, run: /opt/$PROJECT_NAME/config.sh"
 
 # Set up permissions for backlight access
 echo "Setting up permissions for user $USER to access backlight controls..."

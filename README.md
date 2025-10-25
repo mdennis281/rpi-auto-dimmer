@@ -22,7 +22,7 @@ Watch the auto-dimmer in action - timeout is set to 5s for demo purposes
 ### Install
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/install-remote.sh | bash
+curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/install.sh | bash
 ```
 
 ### Configure
