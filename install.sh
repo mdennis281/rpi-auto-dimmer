@@ -147,6 +147,8 @@ sudo systemctl status "$SERVICE_NAME" --no-pager
 echo ""
 echo "Installation complete!"
 echo ""
+echo "To customize settings, run: sudo /opt/$PROJECT_NAME/config.sh"
+echo ""
 echo "Service commands:"
 echo "  Start:   sudo systemctl start $SERVICE_NAME"
 echo "  Stop:    sudo systemctl stop $SERVICE_NAME"
