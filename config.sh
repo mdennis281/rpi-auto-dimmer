@@ -124,5 +124,22 @@ echo "------------------------------------------------------------------------"
 echo "To change these settings later:"
 echo "  • Run this script again: ./config.sh"
 echo "  • Or edit the file directly: nano $CONFIG_FILE"
-echo "  • Remember to restart the service: sudo systemctl restart rpi-auto-dimmer"
+echo ""
+echo -n "Restart the rpi-auto-dimmer service to apply changes? (Y/n): "
+read -r RESTART_SERVICE
+RESTART_SERVICE=${RESTART_SERVICE:-Y}
+
+if [[ "$RESTART_SERVICE" =~ ^[Yy]$ ]] || [[ "$RESTART_SERVICE" == "" ]]; then
+    echo "Restarting service..."
+    if sudo systemctl restart rpi-auto-dimmer 2>/dev/null; then
+        echo "  ✓ Service restarted successfully"
+        echo "  ✓ New settings are now active"
+    else
+        echo "  ⚠ Could not restart service"
+        echo "  ℹ Settings will take effect when service starts"
+    fi
+else
+    echo "Service not restarted. Changes will take effect on next service start."
+    echo "To restart manually: sudo systemctl restart rpi-auto-dimmer"
+fi
 echo "========================================================================"
