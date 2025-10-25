@@ -11,11 +11,13 @@
 
 ## 🎬 Demo
 
-*Demo video coming soon!*
+https://github.com/user-attachments/assets/88fdf161-b541-445c-9d31-14b728b7017f
+
+Watch the auto-dimmer in action - timeout is set to 5s for demo purposes
 
 ---
 
-## 🚀 Quick Start
+## 🚀i Quick Start
 
 ### Install
 
