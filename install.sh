@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# Raspberry Pi Auto-Dimmer Service Installation Script
+# This script sets up the rpi-auto-dimmer as a systemd service
+
+set -e  # Exit on any error
+
+PROJECT_NAME="rpi-auto-dimmer"
+SERVICE_NAME="rpi-auto-dimmer"
+INSTALL_DIR="/opt/$PROJECT_NAME"
+SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
+USER=$(whoami)  # Use the current user running the script
+
+echo "Installing $PROJECT_NAME..."
+
+# Update system packages
+echo "Updating system packages..."
+sudo apt update
+sudo apt upgrade -y
+
+# Install required system packages
+echo "Installing system dependencies..."
+sudo apt install -y python3 python3-pip python3-venv git xprintidle
+
+# Create installation directory
+echo "Creating installation directory..."
+sudo mkdir -p "$INSTALL_DIR"
+sudo chown $USER:$USER "$INSTALL_DIR"
+
+# Copy project files
+echo "Copying project files..."
+cp -r . "$INSTALL_DIR/"
+cd "$INSTALL_DIR"
+
+# Create and activate virtual environment
+echo "Creating Python virtual environment..."
+python3 -m venv venv
+source venv/bin/activate
+
+# Upgrade pip and install requirements
+echo "Installing Python dependencies..."
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Run configuration setup
+echo "Setting up configuration..."
+chmod +x config.sh
+./config.sh
+
+# Set up permissions for backlight access
+echo "Setting up permissions for user $USER to access backlight controls..."
+sudo usermod -a -G gpio $USER
+sudo usermod -a -G video $USER
+
+# Create udev rule for backlight access
+echo "Creating udev rule for backlight access..."
+sudo tee /etc/udev/rules.d/99-backlight.rules > /dev/null << EOF
+SUBSYSTEM=="backlight", ACTION=="add", RUN+="/bin/chgrp video %S%p/brightness", RUN+="/bin/chmod g+w %S%p/brightness"
+SUBSYSTEM=="backlight", ACTION=="add", RUN+="/bin/chgrp video %S%p/bl_power", RUN+="/bin/chmod g+w %S%p/bl_power"
+EOF
+
+# Reload udev rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+
+echo "Service will run as user $USER with hardware access permissions..."
+
+# Create systemd service file
+echo "Creating systemd service..."
+sudo tee "$SERVICE_FILE" > /dev/null << EOF
+[Unit]
+Description=Raspberry Pi Auto Screen Dimmer
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+User=$USER
+Group=$USER
+WorkingDirectory=$INSTALL_DIR
+Environment=PATH=$INSTALL_DIR/venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/$USER/.Xauthority
+ExecStart=$INSTALL_DIR/venv/bin/python main.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
+EOF
+
+# Set proper permissions on the service file
+sudo chmod 644 "$SERVICE_FILE"
+
+# Reload systemd and enable the service
+echo "Enabling and starting service..."
+sudo systemctl daemon-reload
+sudo systemctl enable "$SERVICE_NAME"
+sudo systemctl start "$SERVICE_NAME"
+
+# Check service status
+echo "Service status:"
+sudo systemctl status "$SERVICE_NAME" --no-pager
+
+echo ""
+echo "Installation complete!"
+echo ""
+echo "Service commands:"
+echo "  Start:   sudo systemctl start $SERVICE_NAME"
+echo "  Stop:    sudo systemctl stop $SERVICE_NAME"
+echo "  Restart: sudo systemctl restart $SERVICE_NAME"
+echo "  Status:  sudo systemctl status $SERVICE_NAME"
+echo "  Logs:    sudo journalctl -u $SERVICE_NAME -f"
+echo ""
+echo "The service is now running and will start automatically on boot."
+echo "Check logs with: sudo journalctl -u $SERVICE_NAME -f"
