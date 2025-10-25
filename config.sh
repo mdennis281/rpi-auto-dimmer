@@ -3,7 +3,9 @@
 # Raspberry Pi Auto-Dimmer Configuration Script
 # This script creates a configuration file for the auto-dimmer service
 
-CONFIG_FILE="config.ini"
+# Determine the correct directory for the config file
+SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+CONFIG_FILE="$SCRIPT_DIR/config.ini"
 
 # Display header
 echo "========================================================================"
