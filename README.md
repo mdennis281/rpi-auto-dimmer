@@ -2,10 +2,6 @@
 
 > **The convenient alternative to screen blanking - automatically dims your Raspberry Pi touchscreen when idle, keeping it visible but power-efficient.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-Compatible-red.svg)](https://www.raspberrypi.org/)
-
 > **Note:** This tool is designed for displays connected via ribbon cable (like the official Pi touchscreen). It may not work with HDMI displays.
 
 ## ✨ Features
