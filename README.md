@@ -73,54 +73,6 @@ The interactive configuration script will guide you through customizing:
 
 ---
 
-## 🛠️ Manual Installation
-
-If you prefer to install manually or want to understand what the installer does:
-
-<details>
-<summary>Click to expand manual installation steps</summary>
-
-1. **Install system dependencies**:
-   ```bash
-   sudo apt update && sudo apt install -y python3 python3-pip python3-venv xprintidle curl
-   ```
-
-2. **Download the project**:
-   ```bash
-   sudo mkdir -p /opt/rpi-auto-dimmer
-   sudo chown $USER:$USER /opt/rpi-auto-dimmer
-   cd /opt/rpi-auto-dimmer
-   
-   # Download all files
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/main.py -o main.py
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/requirements.txt -o requirements.txt
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/config.sh -o config.sh
-   mkdir -p src
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/src/idle_monitor.py -o src/idle_monitor.py
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/src/screen_control.py -o src/screen_control.py
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/src/helpers.py -o src/helpers.py
-   curl -sL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/src/decorator.py -o src/decorator.py
-   ```
-
-3. **Set up Python environment**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-4. **Configure the service**:
-   ```bash
-   chmod +x config.sh
-   ./config.sh
-   ```
-
-5. **Set up systemd service**: (See install script for full service configuration)
-
-</details>
-
----
-
 ## 🎮 Service Management
 
 ### Basic Commands
@@ -190,7 +142,7 @@ sudo journalctl -u rpi-auto-dimmer -n 50
 groups $USER  # Should include 'gpio' and 'video'
 
 # If not, run the installer again
-curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/install-remote.sh | bash
+curl -sSL https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main/install.sh | bash
 ```
 
 **Screen not dimming?**
