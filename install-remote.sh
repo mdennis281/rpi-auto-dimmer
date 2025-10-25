@@ -62,9 +62,30 @@ echo "Installing Python dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Run configuration setup
-echo "Setting up configuration..."
-./config.sh
+# Create default configuration
+echo "Setting up default configuration..."
+cat > config.ini << EOF
+[display]
+# Screen brightness percentage when system is idle (0-100)
+idle_brightness = 5
+
+# Screen brightness percentage when system is active (0-100)
+active_brightness = 100
+
+# Number of seconds to wait before dimming the screen
+dim_delay_seconds = 30
+
+[behavior]
+# How often to check idle status (seconds)
+check_interval = 0.25
+EOF
+
+echo "Default configuration created:"
+echo "  ✓ Idle brightness:    5%"
+echo "  ✓ Active brightness:  100%"
+echo "  ✓ Dimming delay:      30 seconds"
+echo ""
+echo "To customize settings later, run: /opt/$PROJECT_NAME/config.sh"
 
 # Set up permissions for backlight access
 echo "Setting up permissions for user $USER to access backlight controls..."
