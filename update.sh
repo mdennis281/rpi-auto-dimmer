@@ -38,7 +38,7 @@ echo "Downloading updated project files..."
 # Download root files
 for file in main.py requirements.txt config.sh LICENSE README.md; do
     echo "  Updating $file..."
-    curl -sL "$GITHUB_RAW_URL/$file" -o "$file" || {
+    curl -sL -H "Cache-Control: no-cache" "$GITHUB_RAW_URL/$file" -o "$file" || {
         echo "Warning: Could not download $file"
     }
 done
@@ -46,7 +46,7 @@ done
 # Download src files
 for file in decorator.py helpers.py idle_monitor.py screen_control.py; do
     echo "  Updating src/$file..."
-    curl -sL "$GITHUB_RAW_URL/src/$file" -o "src/$file" || {
+    curl -sL -H "Cache-Control: no-cache" "$GITHUB_RAW_URL/src/$file" -o "src/$file" || {
         echo "Warning: Could not download src/$file"
     }
 done
