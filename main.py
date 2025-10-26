@@ -39,7 +39,7 @@ def main():
             if consecutive_errors >= max_retries:
                 logger.critical("Maximum retry attempts (%d) reached. Service shutting down.", max_retries)
                 logger.critical("Check hardware connections and system configuration.")
-                break
+                raise e
             
             # Exponential backoff: 1s, 2s, 4s
             retry_delay = min(2 ** (consecutive_errors - 1), 4)
