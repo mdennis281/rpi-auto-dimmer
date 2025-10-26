@@ -13,7 +13,7 @@
 
 ### ❌ What this DOES NOT do: 
 - Give you a way to control / change screen brightness on the fly
-- Force the PI from going into sleep mode (though this is configurable in other ways)
+- Force the PI from going into sleep/blank mode (though this is configurable in other ways)
 
 
 ## 🎬 Demo
