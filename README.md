@@ -6,8 +6,15 @@
 
 ## ✨ Features
 
-- 💡 **Smart brightness control** - Automatically dims screen when idle, restores on activity with clean transitions
-- ⚡ **Power efficient** - Reduces power consumption and heat generation while keeping display visible
+### ✅ What this DOES do: 
+- Automatic dimming of your Raspberry Pi's screen, controlled by last input (touch, mouse, keyboard)
+- Improves power efficiency and LCD life compared to an always-on display
+- Allows you to set the brightness percentage for both "active" and "inactive" states
+
+### ❌ What this DOES NOT do: 
+- Give you a way to control / change screen brightness on the fly
+- Force the PI from going into sleep mode (though this is configurable in other ways)
+
 
 ## 🎬 Demo
 
