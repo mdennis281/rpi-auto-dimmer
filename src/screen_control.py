@@ -29,8 +29,8 @@ class ScreenControl:
     def set_brightness(self, brightness: int) -> bool:
         if self._changing_brightness:
             return False
-        if self.backlight.brightness != brightness:
-            self.backlight.brightness = brightness
+        if self.brightness != brightness:
+            self.brightness = brightness
             return True
         return False
 
