@@ -37,7 +37,7 @@ echo "Downloading updated project files..."
 
 # Download root files
 for file in main.py requirements.txt config.sh LICENSE README.md; do
-    echo "  Updating $file... (no cache)"
+    echo "  Updating $file..."
     curl -sL -H "Cache-Control: no-cache" -H "Pragma: no-cache" -H "Expires: 0" "$GITHUB_RAW_URL/$file?$(date +%s)" -o "$file" || {
         echo "Warning: Could not download $file"
     }
@@ -45,7 +45,7 @@ done
 
 # Download src files
 for file in decorator.py helpers.py idle_monitor.py screen_control.py; do
-    echo "  Updating src/$file... (no cache)"
+    echo "  Updating src/$file..."
     curl -sL -H "Cache-Control: no-cache" -H "Pragma: no-cache" -H "Expires: 0" "$GITHUB_RAW_URL/src/$file?$(date +%s)" -o "src/$file" || {
         echo "Warning: Could not download src/$file"
     }
