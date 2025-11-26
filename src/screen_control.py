@@ -48,4 +48,5 @@ class ScreenControl:
                     self.backlight.brightness = b
                     time.sleep(delay)
         finally:
+            self.backlight.brightness = target_brightness
             self._changing_brightness = False
