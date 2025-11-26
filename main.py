@@ -19,14 +19,15 @@ def main():
     while True:
         try:
             idle_time = idle_monitor.idle_seconds()
+            last_brightness = sc.brightness
             
             # sc.set_brightness returns True if brightness was changed
             if idle_time > DIM_DELAY_SECONDS:
                 if sc.set_brightness(IDLE_BRIGHTNESS):
-                    logger.info("Idle for %.1fs: Dimming screen to %d%% (current %d%%)", idle_time, IDLE_BRIGHTNESS, sc.brightness)
+                    logger.info("Idle for %.1fs: Dimming screen to %d%% (current %d%%)", idle_time, IDLE_BRIGHTNESS, last_brightness)
             else:
                 if sc.set_brightness(ACTIVE_BRIGHTNESS):
-                    logger.debug("Active for %.1fs: Setting screen to %d%% (current %d%%)", idle_time, ACTIVE_BRIGHTNESS, sc.brightness)
+                    logger.debug("Active for %.1fs: Setting screen to %d%% (current %d%%)", idle_time, ACTIVE_BRIGHTNESS, last_brightness)
 
             # Reset error counter on successful operation
             consecutive_errors = 0
