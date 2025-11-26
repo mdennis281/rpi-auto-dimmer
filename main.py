@@ -19,13 +19,14 @@ def main():
     while True:
         try:
             idle_time = idle_monitor.idle_seconds()
-
+            
+            # sc.set_brightness returns True if brightness was changed
             if idle_time > DIM_DELAY_SECONDS:
-                sc.brightness = IDLE_BRIGHTNESS
-                logger.info("Idle for %.1fs: Dimming screen to %d%%", idle_time, IDLE_BRIGHTNESS)
+                if sc.set_brightness(IDLE_BRIGHTNESS):
+                    logger.info("Idle for %.1fs: Dimming screen to %d%%", idle_time, IDLE_BRIGHTNESS)
             else:
-                sc.brightness = ACTIVE_BRIGHTNESS
-                logger.debug("Active for %.1fs: Setting screen to %d%%", idle_time, ACTIVE_BRIGHTNESS)
+                if sc.set_brightness(ACTIVE_BRIGHTNESS):
+                    logger.debug("Active for %.1fs: Setting screen to %d%%", idle_time, ACTIVE_BRIGHTNESS)
 
             # Reset error counter on successful operation
             consecutive_errors = 0
@@ -45,6 +46,9 @@ def main():
             retry_delay = min(2 ** (consecutive_errors - 1), 4)
             logger.warning("Retrying in %ds...", retry_delay)
             time.sleep(retry_delay)
+            
+            
+
 
 
 if __name__ == "__main__":
