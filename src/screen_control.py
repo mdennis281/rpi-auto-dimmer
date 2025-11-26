@@ -6,17 +6,30 @@ import time
 
 class ScreenControl:
     def __init__(self):
+        """Controls the screen backlight brightness and power state.
+        
+        backlight: Instance of rpi_backlight.Backlight to manage the screen backlight.
+        _changing_brightness: Flag indicating if a brightness change is in progress.
+        _brightness: Cached brightness level to track changes 
+            (because Backlight.brightness is sketch sometimes).
+        """
         self.backlight = Backlight()
         self._changing_brightness = False
+        
+        self._brightness: int = -1  
 
     @property
     def brightness(self) -> int:
-        return self.backlight.brightness
+        if self._brightness == -1:
+            self._brightness = self.backlight.brightness
+            
+        return self._brightness
 
     @brightness.setter
     def brightness(self, brightness: int):
-        if brightness != self.backlight.brightness:
+        if brightness != self._brightness:
             self._fade_backlight(brightness)
+            self._brightness = brightness
 
     @property
     def power(self) -> bool:
