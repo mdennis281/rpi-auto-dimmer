@@ -1,0 +1,144 @@
+name: 🔍 PR Validation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-code:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # Install any linting/validation tools
+        pip install flake8 pylint black isort
+        echo "✅ Python tools installed"
+
+    - name: Validate Python syntax
+      run: |
+        echo "🐍 Checking Python syntax..."
+        python -m py_compile main.py
+        python -m py_compile src/*.py
+        echo "✅ All Python files compile successfully"
+
+    - name: Python code style check
+      run: |
+        echo "🎨 Checking Python code style..."
+        # Check with flake8 (but don't fail on style issues, just warn)
+        flake8 main.py src/ --max-line-length=120 --ignore=E203,W503 || echo "⚠️ Style issues found (not blocking)"
+        echo "✅ Python style check complete"
+
+    - name: Validate shell scripts
+      run: |
+        echo "🐚 Checking shell scripts..."
+        
+        # Install shellcheck if not available
+        command -v shellcheck >/dev/null 2>&1 || { 
+          echo "Installing shellcheck..."
+          sudo apt-get update && sudo apt-get install -y shellcheck
+        }
+        
+        # Check all shell scripts
+        SCRIPT_ISSUES=0
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "  Checking $script..."
+            if ! shellcheck "$script"; then
+              echo "⚠️ Issues found in $script"
+              SCRIPT_ISSUES=$((SCRIPT_ISSUES + 1))
+            else
+              echo "✅ $script looks good"
+            fi
+          fi
+        done
+        
+        if [ $SCRIPT_ISSUES -gt 0 ]; then
+          echo "⚠️ Found issues in $SCRIPT_ISSUES script(s) - please review"
+          exit 1
+        else
+          echo "✅ All shell scripts passed validation"
+        fi
+
+    - name: Check version file integrity
+      run: |
+        echo "🔖 Checking version file..."
+        
+        if [ -f "src/version.py" ]; then
+          # Validate version.py can be imported
+          python -c "from src.version import __version__, get_current_version; print(f'Current version: {get_current_version()}')"
+          echo "✅ Version file is valid"
+        else
+          echo "❌ Version file not found"
+          exit 1
+        fi
+
+    - name: Test installation scripts
+      run: |
+        echo "🧪 Testing installation script syntax..."
+        
+        # Test install script for syntax errors
+        if [ -f "install.sh" ]; then
+          bash -n install.sh
+          echo "✅ install.sh syntax is valid"
+        fi
+        
+        # Test update script for syntax errors  
+        if [ -f "update.sh" ]; then
+          bash -n update.sh
+          echo "✅ update.sh syntax is valid"
+        fi
+        
+        # Test config script for syntax errors
+        if [ -f "config.sh" ]; then
+          bash -n config.sh
+          echo "✅ config.sh syntax is valid"
+        fi
+        
+        # Test uninstall script for syntax errors
+        if [ -f "uninstall.sh" ]; then
+          bash -n uninstall.sh
+          echo "✅ uninstall.sh syntax is valid"
+        fi
+
+    - name: Check for common issues
+      run: |
+        echo "🔍 Checking for common issues..."
+        
+        # Check for TODO/FIXME comments that might need attention
+        TODO_COUNT=$(grep -r "TODO\|FIXME\|XXX" --include="*.py" --include="*.sh" . | wc -l || echo "0")
+        if [ "$TODO_COUNT" -gt 0 ]; then
+          echo "ℹ️ Found $TODO_COUNT TODO/FIXME comments:"
+          grep -r "TODO\|FIXME\|XXX" --include="*.py" --include="*.sh" . || true
+        fi
+        
+        # Check for hardcoded paths that might cause issues
+        HARDCODED=$(grep -r "/home/\|/Users/" --include="*.py" --include="*.sh" . | grep -v "README\|example" || echo "")
+        if [ -n "$HARDCODED" ]; then
+          echo "⚠️ Found potential hardcoded paths:"
+          echo "$HARDCODED"
+        fi
+        
+        echo "✅ Common issues check complete"
+
+    - name: Validation Summary
+      run: |
+        echo "🎉 PR Validation Complete!"
+        echo "=========================="
+        echo "✅ Python syntax: Valid"
+        echo "✅ Shell scripts: Valid" 
+        echo "✅ Version file: Valid"
+        echo "✅ Installation scripts: Valid"
+        echo ""
+        echo "This PR is ready for review! 🚀"
