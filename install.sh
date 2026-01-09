@@ -121,6 +121,7 @@ WorkingDirectory=$INSTALL_DIR
 Environment=PATH=$INSTALL_DIR/venv/bin:/usr/local/bin:/usr/bin:/bin
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=/home/$USER/.Xauthority
+ExecStartPre=/bin/sleep 10
 ExecStart=$INSTALL_DIR/venv/bin/python main.py
 Restart=on-failure
 RestartSec=5
