@@ -21,7 +21,7 @@ sudo apt upgrade -y
 
 # Install required system packages
 echo "Installing system dependencies..."
-sudo apt install -y python3 python3-pip python3-venv git xprintidle curl
+sudo apt install -y python3 python3-pip python3-venv git xprintidle curl xauth
 
 # Create installation directory
 echo "Creating installation directory..."
@@ -102,6 +102,19 @@ EOF
 # Reload udev rules
 sudo udevadm control --reload-rules
 sudo udevadm trigger
+
+# Configure SSH X11 Forwarding
+echo "Configuring SSH for X11 Forwarding..."
+# Uncomment if commented out
+sudo sed -i '/^#X11Forwarding/s/^#//' /etc/ssh/sshd_config
+# Change no to yes
+sudo sed -i 's/^X11Forwarding no/X11Forwarding yes/' /etc/ssh/sshd_config
+# Append if not present
+if ! grep -q "^X11Forwarding yes" /etc/ssh/sshd_config; then
+    echo "X11Forwarding yes" | sudo tee -a /etc/ssh/sshd_config
+fi
+# Restart SSH service to apply changes
+sudo systemctl restart ssh
 
 echo "Service will run as user $USER with hardware access permissions..."
 
