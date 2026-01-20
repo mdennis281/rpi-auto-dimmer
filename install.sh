@@ -34,7 +34,7 @@ sudo apt upgrade -y
 
 # Install required system packages
 echo "Installing system dependencies..."
-sudo apt install -y python3 python3-pip python3-venv git xprintidle curl
+sudo apt install -y python3 python3-pip python3-venv git curl
 
 # Create installation directory
 echo "Creating installation directory..."
@@ -67,7 +67,7 @@ chmod +x config.sh
 
 # Create and activate virtual environment
 echo "Creating Python virtual environment..."
-python3 -m venv venv
+python3 -m venv --system-site-packages venv
 source venv/bin/activate
 
 # Upgrade pip and install requirements
@@ -101,9 +101,10 @@ echo ""
 echo "To customize settings later, run: /opt/$PROJECT_NAME/config.sh"
 
 # Set up permissions for backlight access
-echo "Setting up permissions for user $USER to access backlight controls..."
+echo "Setting up permissions for user $USER to access backlight controls and input devices..."
 sudo usermod -a -G gpio $USER
 sudo usermod -a -G video $USER
+sudo usermod -a -G input $USER
 
 # Create udev rule for backlight access
 echo "Creating udev rule for backlight access..."
