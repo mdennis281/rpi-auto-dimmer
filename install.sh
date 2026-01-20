@@ -10,9 +10,22 @@ SERVICE_NAME="rpi-auto-dimmer"
 INSTALL_DIR="/opt/$PROJECT_NAME"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 USER=$(whoami)  # Use the current user running the script
-GITHUB_RAW_URL="https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/main"
 
-echo "Installing $PROJECT_NAME from GitHub..."
+# Default branch
+BRANCH="main"
+
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -b|--branch) BRANCH="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+GITHUB_RAW_URL="https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/$BRANCH"
+
+echo "Installing $PROJECT_NAME from GitHub (branch: $BRANCH)..."
 
 # Update system packages
 echo "Updating system packages..."
