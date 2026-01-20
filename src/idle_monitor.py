@@ -21,12 +21,17 @@ def idle_seconds(seat="seat0"):
         if not idle_since_str:
             raise RuntimeError("IdleSinceHint is empty")
 
-        # Parse systemd timestamp: "2026-01-16 08:42:31 CST"
-        idle_since = datetime.datetime.strptime(
-            idle_since_str, "%Y-%m-%d %H:%M:%S %Z"
-        )
+        if idle_since_str.isdigit():
+            # Handle microsecond timestamp (e.g. 1768922635273658)
+            idle_since = datetime.datetime.fromtimestamp(int(idle_since_str) / 1_000_000)
+            now = datetime.datetime.now()
+        else:
+            # Parse systemd timestamp: "2026-01-16 08:42:31 CST"
+            idle_since = datetime.datetime.strptime(
+                idle_since_str, "%Y-%m-%d %H:%M:%S %Z"
+            )
+            now = datetime.datetime.now(tz=idle_since.tzinfo)
 
-        now = datetime.datetime.now(tz=idle_since.tzinfo)
         delta = now - idle_since
 
         return delta.total_seconds()
