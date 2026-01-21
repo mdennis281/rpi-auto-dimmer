@@ -4,7 +4,7 @@ from src.screen_control import ScreenControl
 from src.helpers import setup_logging, load_config
 from src.decorator import retry_on_exception
 
-# Set up logging and configuration  
+# Set up logging and configuration
 logger = setup_logging()
 IDLE_BRIGHTNESS, ACTIVE_BRIGHTNESS, DIM_DELAY_SECONDS, CHECK_INTERVAL = load_config()
 
