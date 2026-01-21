@@ -25,6 +25,13 @@ done
 
 GITHUB_RAW_URL="https://raw.githubusercontent.com/mdennis281/rpi-auto-dimmer/refs/heads/$BRANCH"
 
+# Check for Wayland
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    echo "Error: Wayland detected. This software requires an X11 environment."
+    echo "Please disable Wayland in 'sudo raspi-config' -> Advanced Options -> Wayland -> X11"
+    exit 1
+fi
+
 echo "Installing $PROJECT_NAME from GitHub (branch: $BRANCH)..."
 
 # Update system packages
@@ -34,7 +41,7 @@ sudo apt upgrade -y
 
 # Install required system packages
 echo "Installing system dependencies..."
-sudo apt install -y python3 python3-pip python3-venv git curl
+sudo apt install -y python3 python3-pip python3-venv git curl xprintidle
 
 # Create installation directory
 echo "Creating installation directory..."
