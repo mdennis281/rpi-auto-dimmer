@@ -32,7 +32,6 @@ def retry_on_exception(max_retries=3, delay=2):
     Args:
         max_retries (int): Maximum number of retries. Default is 3.
         delay (int): Delay in seconds between retries. Default is 2.
-        exceptions (tuple): Tuple of exception classes to catch for retries. Default is (Exception,).
     
     Returns:
         The return value of the decorated function if successful.
@@ -49,7 +48,7 @@ def retry_on_exception(max_retries=3, delay=2):
                     log.warning("Exception in %s: %s (attempt %d/%d)", func.__name__, e, attempts, max_retries)
                     if attempts >= max_retries:
                         log.error("Max retries reached for %s. Raising exception.", func.__name__)
-                        raise e
+                        raise
                     log.info("Retrying %s in %d seconds...", func.__name__, delay)
                     time.sleep(delay)
         return wrapper

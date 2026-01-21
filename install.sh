@@ -74,7 +74,7 @@ chmod +x config.sh
 
 # Create and activate virtual environment
 echo "Creating Python virtual environment..."
-python3 -m venv --system-site-packages venv
+python3 -m venv venv
 source venv/bin/activate
 
 # Upgrade pip and install requirements
