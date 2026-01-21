@@ -7,7 +7,7 @@
 ## Requirements
 
 - Ribbon-cable connected display (HDMI wont work)
-- X11 Display protocol (Wayland will be supported soon) 
+- X11 Display protocol (Wayland wont work)
 
 ## ✨ Features
 

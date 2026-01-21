@@ -3,7 +3,7 @@ import configparser
 import os
 
 
-def setup_logging():
+def setup_logging(name=__name__):
     """Configure logging for systemd service"""
     logging.basicConfig(
         level=logging.INFO,
@@ -12,7 +12,7 @@ def setup_logging():
             logging.StreamHandler()  # This will output to systemd journal
         ]
     )
-    return logging.getLogger(__name__)
+    return logging.getLogger(name)
 
 
 def load_config():

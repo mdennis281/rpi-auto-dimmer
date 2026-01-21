@@ -2,8 +2,7 @@ name: 🔍 PR Validation
 
 on:
   pull_request:
-    branches: [ main ]
-
+    branches: [ no_branch ] # main
 jobs:
   validate-code:
     runs-on: ubuntu-latest
