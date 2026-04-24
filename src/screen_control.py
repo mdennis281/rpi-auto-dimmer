@@ -1,7 +1,8 @@
+import time
+
 from rpi_backlight import Backlight
 from src.decorator import threaded
 from src.helpers import setup_logging
-import time
 
 
 log = setup_logging(__name__)
@@ -36,7 +37,7 @@ class ScreenControl:
         backlight sysfs attribute accepts writes. Raises OSError if the
         firmware is not ready yet."""
         current = self.backlight.brightness
-        self.backlight.brightness = current
+        self._write_brightness(current)
 
     @property
     def brightness(self) -> int:
@@ -89,7 +90,7 @@ class ScreenControl:
             # doing nothing. Log it, invalidate the cached brightness so the
             # next set_brightness call re-reads reality, and let the main
             # loop try again.
-            log.warning("Failed to write backlight brightness: %s", e)
+            log.warning("Failed to write backlight brightness (target=%d)", target_brightness, exc_info=True)
             self._brightness = -1
         finally:
             self._changing_brightness = False
